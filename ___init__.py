@@ -6,8 +6,8 @@ import eod_rate as er
 import transaction as tr
 
 def main():
-    rates = er.rate_ready_to_cal('2018-07-09', '2018-07-15')
-    rates.to_csv('./out.csv')
+    # rates = er.rate_ready_to_cal('2018-07-09', '2018-07-15')
+    # rates.to_csv('./out.csv')
     
     rates = pd.read_csv('./out.csv')
     rates['finalRate'] = pd.to_numeric(rates['finalRate'])
