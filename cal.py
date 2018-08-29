@@ -54,6 +54,9 @@ def calculation(from_t: str, to_t: str, sales_list=salesList):
     raw_data = data_ready('2018-07-09', '2018-07-15',sales_list)
     result = {}
     for i in raw_data['sales']:
-        result[i.sale] = i.set_by_base(raw_data['rates'])
+        result[i.sale] = {
+            'summary':i.set_by_base(raw_data['rates']),
+            'detail':i.get_pair_time_df()
+        }
     return result
     

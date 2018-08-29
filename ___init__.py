@@ -1,11 +1,19 @@
 import cal as cal
+import sys
+import pandas as pd
 
 def main():
-    sumary = cal.calculation('2018-07-09','2018-07-15')
+    sumary = cal.calculation(sys.argv[1],sys.argv[2])
+    outcome = pd.ExcelWriter('./outcome.xlsx',engine='xlsxwriter')
     for k in sumary.keys():
         print(k)
-        print(sumary[k])
-        print('\n')
+        rs = sumary[k]['summary'].shape[0]
+        sumary[k]['summary'].to_excel(outcome,sheet_name=str(k))
+        # outcome_worksheet = outcome.sheets[str(k)]
+        # for row_num,v in sumary[k]['detail'].iterrows():
+        #     outcome_worksheet.write(row_num+rs+2,)
+        sumary[k]['detail'].to_excel(outcome, sheet_name= str(k),startrow=(rs+2))
+    outcome.save()
   
 if __name__ == '__main__':
     main()
