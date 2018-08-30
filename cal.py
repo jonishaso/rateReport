@@ -16,10 +16,9 @@ def data_ready(from_t:str, to_t:str,sales_list=salesList):
     now = d.now().timestamp()
     rate_result = {}
     sale_reault = nparray([])
-    eod_symbol_list = create_symbol_list(from_t,to_t)
     loop = get_event_loop()
     asnyc_eod_tasks_list = [ensure_future(rate_at_eod(
-        pair[0], pair[1], 0, 23)) for pair in eod_symbol_list]
+        pair[0], pair[1], 0, 23)) for pair in create_symbol_list(from_t,to_t)]
     ts_2 = ensure_future(create_sales_obj(from_t,to_t,sales_list))
     asnyc_eod_tasks_list.append(ts_2)
     loop.run_until_complete(wait(asnyc_eod_tasks_list))
@@ -51,7 +50,7 @@ def data_ready(from_t:str, to_t:str,sales_list=salesList):
     }  
     
 def calculation(from_t: str, to_t: str, sales_list=salesList):
-    raw_data = data_ready('2018-07-09', '2018-07-15',sales_list)
+    raw_data = data_ready(from_t,to_t,sales_list)
     result = {}
     for i in raw_data['sales']:
         result[i.sale] = {

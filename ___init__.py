@@ -4,7 +4,7 @@ import pandas as pd
 
 def main():
     sumary = cal.calculation(sys.argv[1],sys.argv[2])
-    outcome = pd.ExcelWriter('./outcome.xlsx',engine='xlsxwriter')
+    outcome = pd.ExcelWriter('./outcome/' +sys.argv[1]+ '~' +sys.argv[2]+'.xlsx',engine='xlsxwriter')
     for k in sumary.keys():
         print(k)
         rs = sumary[k]['summary'].shape[0]
