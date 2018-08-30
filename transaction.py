@@ -77,11 +77,22 @@ class Sales_volume:
             temp_df = DataFrame(array(ticket_list), columns=[
                                    'ticket', 'volume', 'login', 'status'])
             temp_df['volume'] = to_numeric(temp_df['volume'])
-            total_pair[(new_key[0], str(new_key[1]).split(' ')[0])] = {
-                'total_volume': temp_df['volume'].sum() * (cz[new_key[0]]/100),
-                # "cz": cz[new_key[0],
-                'detail': temp_df
-            }
+            try:
+                total_pair[(new_key[0], str(new_key[1]).split(' ')[0])] = {
+                    'total_volume': temp_df['volume'].sum() * (cz[new_key[0]]/100),
+                    # "cz": cz[new_key[0],
+                    'detail': temp_df
+                }
+            except KeyError:
+                if 6 == len(new_key[0]):
+                    total_pair[(new_key[0], str(new_key[1]).split(' ')[0])] = {
+                        'total_volume': temp_df['volume'].sum() * 1000,
+                        # "cz": cz[new_key[0],
+                        'detail': temp_df
+                    }
+                else:
+                    print("Symbol({}) is not in the Contract Size list".format(new_key[0]))
+                    continue
         self.total_gp_pair = total_pair
 
     def set_pair_time(self):

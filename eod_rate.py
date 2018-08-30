@@ -88,7 +88,7 @@ def create_symbol_list(f_time: str, e_time: str):
                         alter_s = usd_check[s[:3]].split('.')[0]
                         temp = (alter_s, t)
                     except KeyError:
-                        print('error symbol {}'.format(alter_s))
+                        print('create symbol list error symbol {}'.format(s))
                         continue
                 else:
                     temp = (s, t)
@@ -97,7 +97,7 @@ def create_symbol_list(f_time: str, e_time: str):
                     alter_s = s
                     temp = (alter_s, t)
                 except KeyError:
-                    print('error symbol {}'.format(alter_s))
+                    print('create symbol list error symbol {}'.format(s))
                     continue
             if temp not in symbol_date_pair:
                 symbol_date_pair.append(temp)
@@ -118,7 +118,7 @@ def create_symbol_list(f_time: str, e_time: str):
                         alter_s = usd_check[s[:3]].split('.')[0]
                         temp = (alter_s, t)
                     except KeyError:
-                        print('error symbol {}'.format(alter_s))
+                        print('create symbol list error symbol {}'.format(s))
                         continue
                 else:
                     temp = (s, t)
@@ -127,7 +127,7 @@ def create_symbol_list(f_time: str, e_time: str):
                     alter_s = s
                     temp = (alter_s, t)
                 except KeyError:
-                    print('error symbol {}'.format(alter_s))
+                    print('create symbol list error symbol {}'.format(s))
                     continue
             if temp not in symbol_date_pair:
                 symbol_date_pair.append(temp)

@@ -1,6 +1,8 @@
 import cal as cal
 import sys
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np 
 
 def main():
     sumary = cal.calculation(sys.argv[1],sys.argv[2])
@@ -14,6 +16,6 @@ def main():
         #     outcome_worksheet.write(row_num+rs+2,)
         sumary[k]['detail'].to_excel(outcome, sheet_name= str(k),startrow=(rs+2))
     outcome.save()
-  
+
 if __name__ == '__main__':
     main()
