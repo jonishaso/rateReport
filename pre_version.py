@@ -1,11 +1,9 @@
 import MySQLdb as mdb
-from datetime import datetime
 import json
-from struct import pack, unpack
+from struct import unpack
 import datetime as d
 import socket
 import asyncio
-import functools
 
 with open("./config.json") as f:
     json = json.load(f)

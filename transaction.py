@@ -60,7 +60,7 @@ class Sales_volume:
                 open_ele = temp_ele
             try:
                 temp_ele = close_group[new_key]
-            except:
+            except KeyError:
                 temp_ele = []
             finally:
                 close_ele = temp_ele
@@ -243,7 +243,7 @@ async def get_transaction(fromT: str, toT: str):
         close_transactions = DataFrame(array([]))
     finally:
         con.close()
-        return {'open': open_transactions, 'close': close_transactions}
+    return {'open': open_transactions, 'close': close_transactions}
 
 
 async def create_sales_obj(fromt_t: str, to_t: str, sales_list=salesList):

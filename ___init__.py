@@ -2,7 +2,6 @@ import cal as cal
 import sys
 import pandas as pd
 # import matplotlib.pyplot as plt
-import numpy as np 
 
 def main():
     sumary = cal.calculation(sys.argv[1],sys.argv[2])

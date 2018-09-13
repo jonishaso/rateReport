@@ -1,7 +1,7 @@
 import MySQLdb as mdb
 from datetime import datetime as d
 from json import load
-from struct import pack, unpack
+from struct import unpack
 from socket import socket, AF_INET, SOCK_STREAM
 
 with open('./setting.json') as ff:
