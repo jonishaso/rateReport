@@ -1,7 +1,8 @@
 import MySQLdb as mdb
+import _mysql
 from json import load
 from numpy import array, around, float32
-from pandas import DataFrame, to_datetime, to_numeric, read_sql_query
+from pandas import DataFrame, to_numeric, read_sql_query
 from datetime import datetime as d
 import inspect
 
@@ -12,7 +13,7 @@ with open('./setting.json') as ff:
     db_hst = j['dbHst']
     db_name = j['dbNm']
 
-
+_mysql.Error
 class Equity:
     def __init__(self, login: str, closed_pl: float, total_deposit: float, first_eq: float, last_eq: float):
         self.login = login
@@ -57,11 +58,14 @@ def get_equity_data(from_t: str, close_t: str):
              group by login) as tt on tt.login = dd.login where time between date(%(pre_from)s) and date(%(to)s)
              order by dd.login, dd.time;""",
             con, params={'pre_from': pre_begin_string, 'from': from_t, 'to': close_t}, parse_dates=['time'])
-    except:
-        print('Error: database query error in function: {}; file: {}'.format(
+    except Exception as e:
+        print('Error: in function: {}; file: {}'.format(
             function_name, file_name))
+        print(e)
         con.rollback()
-        return
+        con.close()
+        return DataFrame(array([]))
+    con.close()
     equity_records['balance'] = to_numeric(equity_records['balance'])
     equity_records['profit_closed'] = to_numeric(
         equity_records['profit_closed'])
@@ -71,6 +75,9 @@ def get_equity_data(from_t: str, close_t: str):
 
 
 def equity_by_user(raw_data):
+    if 0 == raw_data.size:
+        print('no raw equity records')
+        return
     grouped_index = raw_data.groupby(['login']).groups
     temp_cal_list = []
     for key in grouped_index.keys():

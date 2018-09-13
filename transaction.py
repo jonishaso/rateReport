@@ -189,8 +189,7 @@ def get_valid_user(sales_list: list = salesList):
     finally:
         print('get_valid_user function run for {} seconds'.format(
             d.now().timestamp() - now))
-        con.close()
-    """
+        con.close() """
 
     cur = con.cursor()
     try:

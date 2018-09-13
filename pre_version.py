@@ -16,15 +16,12 @@ end = "2018-07-15 00:00:00"
 eod_rate_temp_list = []
 eod_rate_collection = {}
 
-'''
 
-function about fetching eod rate from MT4 server web API
+""" function about fetching eod rate from MT4 server web API
 
 1. make time in the request independent from combined symbol's time, allowning jet lag 
 2. remove coupling between API request and client trades records, using sql query to config out 
-    required symbol pair and date
-
-'''
+    required symbol pair and date """
 
 
 def get_response(symbol: str, from_t: int, to_t: int, step: int):
@@ -134,7 +131,7 @@ def create_async_task_list(f_time: str, e_time: str):
                 symbol_date_pair.append(temp)
             else:
                 continue
-    except:
+    except Exception:
         print('database error in get_valid_user function')
         con.rollback()
     finally:

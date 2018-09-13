@@ -133,7 +133,7 @@ def create_symbol_list(f_time: str, e_time: str):
                 symbol_date_pair.append(temp)
             else:
                 continue
-    except:
+    except Exception as e:
         print('database error in get_valid_user function')
         con.rollback()
     finally:
