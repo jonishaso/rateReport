@@ -1,6 +1,6 @@
 import MySQLdb as mdb
 from json import load
-from numpy import array,unique,dtype
+from numpy import array, unique, dtype
 from pandas import DataFrame, to_datetime, to_numeric, read_sql_query
 from datetime import datetime as d
 
@@ -75,7 +75,7 @@ class Sales_volume:
                     ticket_list.append(
                         (row['ticket'], row['volume'], row['login'], 'close'))
             temp_df = DataFrame(array(ticket_list), columns=[
-                                   'ticket', 'volume', 'login', 'status'])
+                'ticket', 'volume', 'login', 'status'])
             temp_df['volume'] = to_numeric(temp_df['volume'])
             try:
                 total_pair[(new_key[0], str(new_key[1]).split(' ')[0])] = {
@@ -91,7 +91,8 @@ class Sales_volume:
                         'detail': temp_df
                     }
                 else:
-                    print("Symbol({}) is not in the Contract Size list".format(new_key[0]))
+                    print(
+                        "Symbol({}) is not in the Contract Size list".format(new_key[0]))
                     continue
         self.total_gp_pair = total_pair
 
@@ -139,7 +140,8 @@ class Sales_volume:
                 self.pair_time_df.iloc[k[0], 5] = k[1][3] * r
             else:
                 try:
-                    r = rates[(rates['pair'] == p) & (rates['time'] == t)]['finalRate']._values[0]
+                    r = rates[(rates['pair'] == p) & (
+                        rates['time'] == t)]['finalRate']._values[0]
                     self.pair_time_df.iloc[k[0], 4] = r
                     self.pair_time_df.iloc[k[0], 5] = k[1][3] * r
                 except IndexError:
@@ -176,20 +178,6 @@ class Sales_volume:
 def get_valid_user(sales_list: list = salesList):
     now = d.now().timestamp()
     con = mdb.connect(db_hst, db_usr, db_pwd, db_name)
-
-    """ the way to plolute sql result to dataframe
-    try:
-        logins = read_sql_query(
-            "SELECT u.login, u.status FROM MT4_USERS as u where u.status in ('%(sales)s','1002','1003','1004','1005','1006','1007','1009','1010','2001','2002','3001','3002','100') and u.group in ('U-RZST0000001','U-RZCT0000001','U-RZUT0000001','E-RZST0000001','E-RZUT0000001','URZCT0000R01031','URZCTS7C35R031','URZTIB1','URZST0000R03001');", con,params={'sales':1001})
-        return logins
-    except Exception as e:
-        print('database error in get_valid_user function, {}'.format(e))
-        con.rollback()
-        return DataFrame(data=array([]))
-    finally:
-        print('get_valid_user function run for {} seconds'.format(
-            d.now().timestamp() - now))
-        con.close() """
 
     cur = con.cursor()
     try:

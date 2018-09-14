@@ -1,10 +1,11 @@
 import MySQLdb as mdb
-import _mysql
 from json import load
 from numpy import array, around, float32
 from pandas import DataFrame, to_numeric, read_sql_query
 from datetime import datetime as d
 import inspect
+
+EMPTY_DF = DataFrame(array([]))
 
 with open('./setting.json') as ff:
     j = load(ff)
@@ -13,7 +14,6 @@ with open('./setting.json') as ff:
     db_hst = j['dbHst']
     db_name = j['dbNm']
 
-_mysql.Error
 class Equity:
     def __init__(self, login: str, closed_pl: float, total_deposit: float, first_eq: float, last_eq: float):
         self.login = login
@@ -34,10 +34,10 @@ def get_equity_data(from_t: str, close_t: str):
     try:
         temp_begin = d.fromisoformat(from_t)
         d.fromisoformat(close_t)
-    except:
+    except ValueError:
         print('Error: iso time format error in function: {}; file: {}'.format(
             function_name, file_name))
-        return
+        return EMPTY_DF
 
     temp_begin_weekday = temp_begin.isoweekday()
     if 1 == temp_begin_weekday:
@@ -64,7 +64,7 @@ def get_equity_data(from_t: str, close_t: str):
         print(e)
         con.rollback()
         con.close()
-        return DataFrame(array([]))
+        return EMPTY_DF
     con.close()
     equity_records['balance'] = to_numeric(equity_records['balance'])
     equity_records['profit_closed'] = to_numeric(
@@ -75,9 +75,20 @@ def get_equity_data(from_t: str, close_t: str):
 
 
 def equity_by_user(raw_data):
-    if 0 == raw_data.size:
-        print('no raw equity records')
-        return
+    frame = inspect.getframeinfo(inspect.currentframe())
+    file_name = frame.filename
+    function_name = frame.function
+    try:
+        temp_sz = raw_data.size
+    except AttributeError:
+        print('Error: raw data error in function: {}; file: {}'.format(
+            function_name, file_name))
+        return EMPTY_DF
+    if 0 == temp_sz:
+        print('Error: raw data error in function: {}; file: {}'.format(
+            function_name, file_name))
+        return EMPTY_DF
+
     grouped_index = raw_data.groupby(['login']).groups
     temp_cal_list = []
     for key in grouped_index.keys():
@@ -105,7 +116,7 @@ def equity_by_user(raw_data):
 
 def main():
     # print(get_active_user('2018-03-01', '2018-08-30'))
-    raw_data = get_equity_data('2018-03-02', '2018-09-13')
+    raw_data = get_equity_data('2018-09-01', '2018-09-13')
     grouped = equity_by_user(raw_data)
     print(grouped)
 
