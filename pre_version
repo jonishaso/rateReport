@@ -18,10 +18,8 @@ eod_rate_collection = {}
 
 
 """ function about fetching eod rate from MT4 server web API
-
-1. make time in the request independent from combined symbol's time, allowning jet lag 
-2. remove coupling between API request and client trades records, using sql query to config out 
-    required symbol pair and date """
+1. make time in the request independent from combined symbol's time, allowning jet lag
+2. remove coupling between API request and client trades records, using sql query to config out required symbol pair and date """
 
 
 def get_response(symbol: str, from_t: int, to_t: int, step: int):
