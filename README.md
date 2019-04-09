@@ -1,2 +1,2 @@
 # rateReport
-calculation CDF price
+calculations
